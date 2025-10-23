@@ -12,7 +12,7 @@ response: ChatResponse = chat(
 
 pprint(response)
 pprint(response.model_dump())
-for key in response.model_dump():
+for key, value in response.model_dump().items():
     print(key)
 
 type(response)
