@@ -1,3 +1,6 @@
+# This is to run Ollama locally
+# First need to `ollama serve` before running this module
+
 import json
 
 import httpx
