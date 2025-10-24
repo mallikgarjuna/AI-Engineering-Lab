@@ -26,6 +26,8 @@ def is_ollama_running() -> bool:
         print("Make sure to run Ollama locally with `ollama serve`")
         return False
     else:
+        # try-consider-else (TRY300)
+        # https://docs.astral.sh/ruff/rules/try-consider-else/
         try:
             data = response.json()
         except JSONDecodeError as exc:
