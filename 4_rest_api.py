@@ -23,18 +23,28 @@ payload = {
 
 # Send the HTTP POST request with streaming enabled using HTTPX.stream()
 # response = httpx.post(url=url, data=data) # This doesn't work for streaming
-with httpx.stream(method="POST", url=url, json=payload) as response:
-    print(response.status_code)
-    for line in response.iter_lines():
-        # print(line)
-        # Ignore empty lines
-        if not line:
-            continue
-
+try:
+    with httpx.stream(method="POST", url=url, json=payload) as response:
+        # print(response.status_code)
         try:
-            # Parse each line as a JSON object
-            json_data = json.loads(line)
-            # Use 'flush=True' to force the stream output live
-            print(json_data["message"]["content"], end="", flush=True)
-        except json.JSONDecodeError as exc:
-            print(f"Failed to parse line: {line} with error {exc.msg}")
+            response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            print(
+                f"Error response {exc.response.status_code} while requesting {exc.request.url!r}"
+            )
+
+        for line in response.iter_lines():
+            # print(line)
+            # Ignore empty lines
+            if not line:
+                continue
+
+            try:
+                # Parse each line as a JSON object
+                json_data = json.loads(line)
+                # Use 'flush=True' to force the stream output live
+                print(json_data["message"]["content"], end="", flush=True)
+            except json.JSONDecodeError as exc:
+                print(f"Failed to parse line: {line} with error {exc.msg}")
+except httpx.RequestError as exc:
+    print(f"An error occured while requesting {exc.request.url!r}")
