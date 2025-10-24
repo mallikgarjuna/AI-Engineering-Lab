@@ -23,10 +23,10 @@ payload = {
 
 # Send the HTTP POST request with streaming enabled using HTTPX.stream()
 # response = httpx.post(url=url, data=data) # This doesn't work for streaming
-try:
+try:  # For handling request error
     with httpx.stream(method="POST", url=url, json=payload) as response:
         # print(response.status_code)
-        try:
+        try:  # For handling response error
             response.raise_for_status()
         except httpx.HTTPStatusError as exc:
             print(
@@ -41,7 +41,12 @@ try:
 
             try:
                 # Parse each line as a JSON object
+                # Take this text line that looks like JSON, and convert (parse) it into a real Python object (a dictionary).
+                # B/c: type(line) # <class 'str'>, it's a "JSON string", not a native Python dict obj;
+                # This is a JSON string — just text that looks like a dictionary but isn’t one yet.
                 json_data = json.loads(line)
+                # Now, type(json_data) # <class 'dict'>; so I can safely use dict methods
+
                 # Use 'flush=True' to force the stream output live
                 print(json_data["message"]["content"], end="", flush=True)
             except json.JSONDecodeError as exc:
