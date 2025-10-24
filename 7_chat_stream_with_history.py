@@ -34,13 +34,13 @@ def is_ollama_running() -> bool:
             print(f"Error while parsing JSON data to py obj: {exc.msg}")
         else:
             print(
-                f"Ollama version: {data['version']} network response: {response.status_code}"
+                f"Ollama version: {data['version']} network response: {response.status_code}",
             )
         return response.status_code == httpx.codes.OK  # instead of hardcoding 200;
 
 
 # Chat stream
-def chat_stream() -> None:
+def chat_stream_with_memory() -> None:
     model = "tinyllama"
     message_history: list[dict[str, Any]] = []
 
@@ -86,4 +86,4 @@ if __name__ == "__main__":
     if not is_ollama_running():
         sys.exit()
     else:
-        chat_stream()
+        chat_stream_with_memory()
