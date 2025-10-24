@@ -4,7 +4,7 @@
 import ollama
 from rich import print as rich_print
 
-model = "tinyllamax"
+model = "tinyllama"
 
 messages = [
     {
