@@ -95,6 +95,45 @@ def calculate_cost():
     # print(response.choices[0].message.content)
 
 
+# Content creation:
+# AI-generated content, including text, images, audio, and even video,
+# is becoming more and more mainstream, particularly for industries and roles
+# that require creating user-facing content, such as media and marketing.
+prompt3 = "Create a slogan for a new restaurant."
+
+
+def content_generation():
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt3}],
+        max_completion_tokens=100,
+    )
+    print(response.choices[0].message.content)
+
+
+# Text generation:
+# Text generation powers countless industries, from marketing copywriting to
+# customer service automation. Keep experimenting to unlock its full potential!
+prompt4 = """generate a product description for SonicPro headphones, including:
+
+    Active noise cancellation (ANC)
+    40-hour battery life
+    Foldable design"""
+
+
+def generate_product_description():
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt4}],
+        max_completion_tokens=MAX_COMPLETION_TOKENS,
+        temperature=0.2,
+    )
+
+    print(response.choices[0].message.content)
+
+
 if __name__ == "__main__":
     # summarize_text()
-    calculate_cost()
+    # calculate_cost()
+    # content_generation()
+    generate_product_description()
