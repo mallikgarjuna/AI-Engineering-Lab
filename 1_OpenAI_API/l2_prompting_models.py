@@ -81,8 +81,11 @@ def calculate_cost():
     output_token_price = 0.6 / 1_00_000
 
     # Extract token usage
-    input_tokens = response.usage.prompt_tokens
-    output_tokens = response.usage.completion_tokens
+    if response and response.usage:
+        input_tokens = response.usage.prompt_tokens
+        output_tokens = response.usage.completion_tokens
+    else:
+        print("No 'usage' returned.")
 
     # Calculate cost
     cost = input_tokens * input_token_price + output_tokens * output_token_price
