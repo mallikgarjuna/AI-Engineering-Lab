@@ -156,9 +156,29 @@ def zero_shot_prompting():
     print(response.choices[0].message.content)
 
 
+prompt_one_shot = """Classify sentiment as 1-5 (negative to positive):
+1. Love these! = 5
+2. Unbelievably good! =
+3. Shoes fell apart on the second use. =
+4. The shoes look nice, but they aren't very comfortable. =
+5. Can't wait to show them off! =
+"""
+
+
+def one_shot_prompting():
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt_one_shot}],
+        max_completion_tokens=MAX_COMPLETION_TOKENS,
+    )
+
+    print(response.choices[0].message.content)
+
+
 if __name__ == "__main__":
     # summarize_text()
     # calculate_cost()
     # content_generation()
     # generate_product_description()
-    zero_shot_prompting()
+    # zero_shot_prompting()
+    one_shot_prompting()
