@@ -17,3 +17,7 @@ response = client.chat.completions.create(
 )
 
 print(response.choices[0].message.content)
+
+# Use interactive notebook on vscode
+# Install pydantic for .model_dump()
+response.model_dump()
