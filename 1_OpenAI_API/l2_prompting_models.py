@@ -132,8 +132,33 @@ def generate_product_description():
     print(response.choices[0].message.content)
 
 
+# Shot prompting:
+# Providing examples in a prompt - to guide AI responses
+# Zero-shot: no examples, just instructions
+# One-shot: 1 example guides the response
+# Few-shot: multiple examples provide more context
+
+prompt_zero_shot = """Classify the sentiment of the statements provided using 1 to 5 (positive to negative):
+1. Unbelievably good!
+2. Shoes fell apart on the second use.
+3. The shoes look nice, but they aren't very comfortable.
+4. Can't wait to show them off!
+"""
+
+
+def zero_shot_prompting():
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt_zero_shot}],
+        max_completion_tokens=MAX_COMPLETION_TOKENS,
+    )
+
+    print(response.choices[0].message.content)
+
+
 if __name__ == "__main__":
     # summarize_text()
     # calculate_cost()
     # content_generation()
-    generate_product_description()
+    # generate_product_description()
+    zero_shot_prompting()
