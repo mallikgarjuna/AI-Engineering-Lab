@@ -25,30 +25,36 @@ load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-prompt1 = """Replace car with plane and adjust phrase:
-A car is a vehicle that is typically powered by an internal combustion engine
-or an electric motor. It has four wheels, and is designed to carry passengers
-and/or cargo on roads or highways. Cars have become a ubiquitous part of modern
-society, and are used for a wide variety of purposes, such as commuting, travel,
-and transportation of goods. Cars are often associated with freedom, independence,d
-and mobility.
-"""
 
-prompt2 = f"""Summarize the following text into two concise bullet points:
-{prompt1}
-"""
+def summarize_text():
+    prompt1 = """Replace car with plane and adjust phrase:
+    A car is a vehicle that is typically powered by an internal combustion engine
+    or an electric motor. It has four wheels, and is designed to carry passengers
+    and/or cargo on roads or highways. Cars have become a ubiquitous part of modern
+    society, and are used for a wide variety of purposes, such as commuting, travel,
+    and transportation of goods. Cars are often associated with freedom, independence,d
+    and mobility.
+    """
 
-response = client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[
-        {
-            "role": "user",
-            "content": prompt2,
-        },
-    ],
-    max_completion_tokens=100,
-)
+    prompt2 = f"""Summarize the following text into two concise bullet points:
+    {prompt1}
+    """
 
-print(response.choices[0].message.content)
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": prompt2,
+            },
+        ],
+        max_completion_tokens=100,
+    )
 
-response.model_dump()
+    print(response.choices[0].message.content)
+
+    response.model_dump()
+
+
+if __name__ == "__main__":
+    summarize_text()
