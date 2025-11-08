@@ -47,5 +47,28 @@ def utilizing_system_messages():
 # for code explanation.
 
 
+def adding_guardrails():
+    sys_msg = """You are a study planning assistant that creates plans for learning
+    new skills.
+    
+    If these skills are non related to languages, return the message:
+    
+    'Apologies, to focus on languages, we no longer create learning plans on other
+    topics.'
+    """
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "user", "content": sys_msg},
+            {"role": "user", "content": "Help me learn to AI Engineering."},
+        ],
+        max_completion_tokens=100,
+    )
+
+    print(response.choices[0].message.content)
+
+
 if __name__ == "__main__":
-    utilizing_system_messages()
+    # utilizing_system_messages()
+    adding_guardrails()
