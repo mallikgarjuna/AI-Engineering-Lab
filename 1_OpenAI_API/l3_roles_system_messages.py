@@ -183,9 +183,46 @@ def creating_conversation_history():
 # the message history through a loop, which imitates a real-world conversation
 # with new questions and answers.
 
+
+def creating_AI_chatbot():
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a helpful math tutor that speaks concisely.",
+        },
+    ]
+
+    user_queries = ["Explain what pi is.", "Summarize this in two bullet points."]
+
+    for user_query in user_queries:
+        user_message = {"role": "user", "content": user_query}
+
+        messages.append(user_message)
+        print(f"User: {user_query}\n")
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=messages,
+            max_completion_tokens=100,
+        )
+
+        assistant_response = response.choices[0].message.content
+        assistant_message = {
+            "role": "assistant",
+            "content": assistant_response,
+        }
+
+        messages.append(assistant_message)
+        print(f"Assistant: {assistant_response}\n")
+
+
+# Building a conversation history into your applications will allow users to
+# interact much more efficiently by not having to repeat context over and over.
+
 if __name__ == "__main__":
     # utilizing_system_messages()
     # adding_guardrails()
     # adding_assistant_messages()
     # adding_more_assistant_messages()
-    creating_conversation_history()
+    # creating_conversation_history()
+    creating_AI_chatbot()
