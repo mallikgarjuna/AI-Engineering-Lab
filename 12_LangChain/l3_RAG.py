@@ -124,8 +124,31 @@ def splitting_by_character():
 # In the next exercise, you'll take it up a gear and create
 # a recursive character splitter!
 
+
+def recursive_splitting_by_character():
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+    quote = "Words are flowing out like endless rain into a paper cup,\nthey slither while they pass,\nthey slip away across the universe."
+
+    chunk_size = 24
+    chunk_overlap = 10
+
+    # Create an instance of the splitter class
+    splitter = RecursiveCharacterTextSplitter(
+        separators=["\n\n", "\n", " ", ""],
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+    )
+
+    # Split the document and print the chunks
+    docs_chunks = splitter.split_text(text=quote)
+    print(docs_chunks)
+    print([len(doc) for doc in docs_chunks])  # [21, 21, 22, 23, 10, 21, 20]
+
+
 if __name__ == "__main__":
     # PDF_document_loaders()
     # CSV_document_loaders()
     # HTML_document_loaders()
-    splitting_by_character()
+    # splitting_by_character()
+    recursive_splitting_by_character()
