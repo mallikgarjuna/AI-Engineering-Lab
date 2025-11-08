@@ -154,8 +154,38 @@ def adding_more_assistant_messages():
 # provide more optimal responses. Let's learn to create conversations next;
 
 
+# Multi-turn conversations with GPT
+def creating_conversation_history():
+    messages = [
+        {
+            "role": "system",
+            "content": "You are a helpful math tutor that speaks concisely.",
+        },
+        {"role": "user", "content": "Explain what pi is."},
+    ]
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=messages,
+        max_completion_tokens=100,
+    )
+
+    assistant_message = {
+        "role": "assistant",
+        "content": response.choices[0].message.content,
+    }
+
+    messages.append(assistant_message)
+    print(messages)
+
+
+# Now that you've proved that messages can be stored, you can now try running
+# the message history through a loop, which imitates a real-world conversation
+# with new questions and answers.
+
 if __name__ == "__main__":
     # utilizing_system_messages()
     # adding_guardrails()
     # adding_assistant_messages()
-    adding_more_assistant_messages()
+    # adding_more_assistant_messages()
+    creating_conversation_history()
