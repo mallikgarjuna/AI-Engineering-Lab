@@ -9,11 +9,13 @@ wheels/
 # Virtual environments
 .venv
 
-# PDF files
+# PDF files - /12-LangChain/
 *.pdf
 *.csv
 *.html
 *.sqlite3
+*.bin
+*.pickle
 
 
 # =====

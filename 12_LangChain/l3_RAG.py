@@ -243,6 +243,8 @@ def preparing_documents_and_vector_db():
         search_kwargs={"k": 3},
     )
 
+    return retriever
+
 
 # Delightful data preparation!
 # With your documents split, embedded, and stored, you can now design a prompt
@@ -270,10 +272,55 @@ def building_retrieval_prompt_template():
     # placeholders with actual values when the prompt is executed.
     prompt_template = ChatPromptTemplate.from_messages(messages=[("human", message)])
 
+    return prompt_template
+
 
 # Using prompt templates with placeholders makes it much simpler to integrate
 # external data with LLMs in RAG workflows.
 # Time to bring it all together by exercising with LCEL
+
+
+# Now to bring all the components together in your RAG workflow!
+# You've prepared the documents and ingested them into a Chroma database for retrieval.
+# You created a prompt template to include the retrieved chunks from the
+# academic paper and answer questions.
+def creating_RAG_chain():
+    import os
+
+    from dotenv import load_dotenv
+    from langchain_core.runnables import RunnablePassthrough
+    from langchain_openai import ChatOpenAI
+
+    load_dotenv()
+
+    retriever = preparing_documents_and_vector_db()
+    prompt_template = building_retrieval_prompt_template()
+
+    llm = ChatOpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-4o-mini",
+        max_completion_tokens=200,
+    )
+
+    # Create a chain to link retriever, prompt_template, and llm
+    rag_chain = (
+        {"context": retriever, "question": RunnablePassthrough()}
+        | prompt_template
+        | llm
+    )
+
+    # Invoke the chain
+    response = rag_chain.invoke(
+        input="Which popular LLMs were considered in the paper?"
+    )
+    print(response.content)
+
+
+# You successfully set up a RAG workflow to allow you to talk with a PDF document!
+# As we've discussed throughout the course, you may need to experiment
+# with the prompt template, splitting methodology and parameters,
+# and the models used to ensure you get the performance you're looking for.
+
 
 if __name__ == "__main__":
     # PDF_document_loaders()
@@ -283,4 +330,5 @@ if __name__ == "__main__":
     # recursive_splitting_by_character()
     # splitting_HTML()
     # preparing_documents_and_vector_db()
-    building_retrieval_prompt_template()
+    # building_retrieval_prompt_template()
+    creating_RAG_chain()
