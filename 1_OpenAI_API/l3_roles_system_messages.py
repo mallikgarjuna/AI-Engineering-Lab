@@ -69,6 +69,51 @@ def adding_guardrails():
     print(response.choices[0].message.content)
 
 
+# Adding guardrails in the system prompt is a good first line of defence
+# against misuse. We'll now guide model outputs in a slightly different way
+# using the 'assistant' role.
+
+# Utilizing the assistant role:
+# Assistant messages are primarily used for providing examples to the model
+# We can experiment with how many examples are necessary to achieve our goals
+
+# Structuring chat messages:
+# [{system}, {user}, {assistant}, {user}]
+# This system > user-assistant pair examples > new user prompt structure
+# is a best practice for sending chat messages.
+
+# Where to provide examples?
+# System -> important template formatting
+# Assistant -> example conversations
+# User -> content required for the new input (often single-turn)
+
+
+def adding_assistant_messages():
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful Geography tutor that generates concise summaries for different countries.",
+            },
+            {"role": "user", "content": "Give me a quick summary of Portugal."},
+            {
+                "role": "assistant",
+                "content": "Portugal is a country in Europe that borders Spain. The capital city is Lisboa",
+            },
+            {"role": "user", "content": "Give me a quick summary of Greece"},
+        ],
+        max_completion_tokens=100,
+    )
+
+    print(response.choices[0].message.content)
+    # In this case, one example doesn't seems to help the model decide
+    # what sort of information to include, but there's slight deviation in content
+    # and length. Let's try adding more messages,
+    # going from one-shot to few-shot, to see if this improves!
+
+
 if __name__ == "__main__":
     # utilizing_system_messages()
-    adding_guardrails()
+    # adding_guardrails()
+    adding_assistant_messages()
