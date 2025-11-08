@@ -145,7 +145,7 @@ def creating_few_shot_example_set():
         },
     ]
 
-    print(f"Examples set: {examples}")
+    # print(f"Examples set: {examples}")
 
     return examples
 
@@ -153,9 +153,86 @@ def creating_few_shot_example_set():
 # With your examples dataset all set up,
 # you're ready to create your few-shot prompt template!
 
+
+def building_few_shot_prompt_template():
+    from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
+
+    example_promot_template_format = PromptTemplate.from_template(
+        template="Question: {question}\n{answer}",
+    )
+
+    examples = creating_few_shot_example_set()
+
+    few_shot_prompt_template = FewShotPromptTemplate(
+        examples=examples,
+        example_prompt=example_promot_template_format,
+        suffix="Question: {input}",
+        input_variables=["input"],
+    )
+
+    # This '.invoke()' is for invoking the prompt
+    # - different from invoking the llm (see previous examples, above)
+    prompt = few_shot_prompt_template.invoke(
+        input={"input", "What is Jack's favorite technology on DataCamp?"}
+    )
+
+    print(prompt.text)
+
+    return prompt
+
+
+# Invoking the prompt template allows you to see exactly what context the model
+# will have. Now for the final piece: create an LCEL chain to combine the
+# few-shot template with an LLM!
+
+
+def implementing_few_shot_prompting():
+    from langchain_core.prompts import FewShotPromptTemplate, PromptTemplate
+    from langchain_openai import ChatOpenAI
+
+    # Get examples: list of dicts with "question" and "answer" keys
+    examples = creating_few_shot_example_set()
+
+    # Create example_prompt template with "question" and "answer"
+    example_prompt = PromptTemplate.from_template(
+        template="Question: {question}\n{answer}",
+    )
+
+    # Create FewShotPromptTemplate
+    prompt_template = FewShotPromptTemplate(
+        examples=examples,
+        example_prompt=example_prompt,
+        suffix="Question: {input}",
+        input_variables=["input"],
+    )
+
+    # Instantiate an OpenAI chat LLM
+    llm = ChatOpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-4o-mini",
+    )
+
+    # Create the chain
+    llm_chain = prompt_template | llm
+
+    response = llm_chain.invoke(
+        input={"input": "What is Jack's favorite technology on DataCamp?"},
+    )
+
+    print(response.content)
+
+
+# Being able to integrate external data into prompts is an incredibly valuable skill
+# for designing LLM applications like chatbots.
+
+# In the next chapter, you'll continue your LangChain journey to look a different
+# types of chains and agents, which allow LLMs to make decisions!
+
 if __name__ == "__main__":
     # openai_models_in_langchain()
     # huggingface_models_in_langchain()
     # prompt_templates_and_chaining()
     # chat_prompt_templates()
-    creating_few_shot_example_set()
+    # creating_few_shot_example_set()
+    # building_few_shot_prompt_template()
+    implementing_few_shot_prompting()
