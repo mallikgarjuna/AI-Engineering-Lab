@@ -146,9 +146,50 @@ def recursive_splitting_by_character():
     print([len(doc) for doc in docs_chunks])  # [21, 21, 22, 23, 10, 21, 20]
 
 
+# RecursiveCharacterTextSplitter was able to keep the chunks below chunk_size,
+# albeit with a few chunks containing little meaning.
+# Take a moment to experiment with different chunk_size and chunk_overlap values,
+# running the code each time and interpreting the results.
+# Then, head over to the next exercise to split some HTML!
+
+
+def splitting_HTML():
+    from pathlib import Path
+
+    from langchain_community.document_loaders import UnstructuredHTMLLoader
+    from langchain_text_splitters import CharacterTextSplitter
+
+    # Load the HTML document into memory
+    html_file_path = (
+        Path(__file__).absolute().parent / "white_house_executive_order_nov_2023.html"
+    )
+    loader = UnstructuredHTMLLoader(file_path=html_file_path)
+    data = loader.load()
+
+    # Define chunk variables
+    chunk_size = 300
+    chunk_overlap = 100
+
+    # Split the HTML
+    splitter = CharacterTextSplitter(
+        separator=".",
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+    )
+
+    docs_chunks = splitter.split_documents(documents=data)
+    print(docs_chunks)
+
+
+# Play around with the chunk_size and chunk_overlap values to see
+# how this affects the output! When you're ready, head on over to the next video
+# to bring together everything you've learned in this chapter to implement
+# a full RAG workflow!
+
 if __name__ == "__main__":
     # PDF_document_loaders()
     # CSV_document_loaders()
     # HTML_document_loaders()
     # splitting_by_character()
-    recursive_splitting_by_character()
+    # recursive_splitting_by_character()
+    splitting_HTML()
