@@ -12,6 +12,7 @@ wheels/
 # PDF files
 *.pdf
 *.csv
+*.html
 
 
 # =====

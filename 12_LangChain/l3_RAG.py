@@ -67,6 +67,24 @@ def CSV_document_loaders():
 # which could be used in an LLM application to summarize data and generate reports.
 # On to the final document loader type!
 
+
+def HTML_document_loaders():
+    from pathlib import Path
+
+    # Install: uv add unstructured
+    from langchain_community.document_loaders import UnstructuredHTMLLoader
+
+    html_file_path = (
+        Path(__file__).absolute().parent / "white_house_executive_order_nov_2023.html"
+    )
+    loader = UnstructuredHTMLLoader(file_path=html_file_path)
+
+    data = loader.load()
+
+    print(data[0])
+
+
 if __name__ == "__main__":
     # PDF_document_loaders()
-    CSV_document_loaders()
+    # CSV_document_loaders()
+    HTML_document_loaders()
