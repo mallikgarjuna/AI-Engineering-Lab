@@ -82,7 +82,50 @@ def prompt_templates_and_chaining():
     print(response.content)
 
 
+# perfectly pieced-together prompt produced pristine performance!
+# Well-designed prompt templates are at the heart of many LangChain applications;
+# keep experimenting to find the template that gives you optimum performance!
+
+
+def chat_prompt_templates():
+    from langchain_core.prompts import ChatPromptTemplate
+    from langchain_openai import ChatOpenAI
+
+    prompt_template = ChatPromptTemplate.from_messages(
+        messages=[
+            (
+                "system",
+                "You are a geography expert that returns the colors present in a country's flga.",
+            ),
+            ("human", "France"),
+            ("ai", "blue, white, red"),
+            ("human", "{country}"),
+        ],
+    )
+
+    llm = ChatOpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-4o-mini",
+    )
+
+    llm_chain = prompt_template | llm
+
+    # country = "Japan"
+    country = "Spain"
+
+    response = llm_chain.invoke(input={"country": country})
+
+    print(response.content)
+
+
+# Hopefully you're beginning to the power of prompt templates for translating
+# user inputs into model inputs. Try experimenting with other countries to see
+# how the model performs for more complex flags, like 'Spain'. When you're done,
+# head on over to the next video to learn how to scale-up your prompts for larger
+# numbers of examples!
+
 if __name__ == "__main__":
     # openai_models_in_langchain()
     # huggingface_models_in_langchain()
-    prompt_templates_and_chaining()
+    # prompt_templates_and_chaining()
+    chat_prompt_templates()
