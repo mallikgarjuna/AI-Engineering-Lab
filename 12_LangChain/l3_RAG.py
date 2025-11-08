@@ -186,10 +186,73 @@ def splitting_HTML():
 # to bring together everything you've learned in this chapter to implement
 # a full RAG workflow!
 
+# ===== RAG storage and retrieval using vector databases ============
+# So far: we've covered document loading and splitting,
+# Now: we'll round-out the RAG workflow with learning about storing and retrieving
+# this information using vector databases.
+
+
+# Here we use: Chroma - b/c it's lightweight and easy to set up;
+# Here, 'documents' - meaning chunks (MG)
+def preparing_documents_and_vector_db():
+    import os
+    from pathlib import Path
+
+    from dotenv import load_dotenv
+
+    # Install: uv add langchain-chroma
+    from langchain_chroma import Chroma
+    from langchain_community.document_loaders import PyPDFLoader
+    from langchain_openai import OpenAIEmbeddings
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+
+    # Load env variables
+    load_dotenv()
+
+    # Load the PDF document into data
+    pdf_file_path = Path(__file__).absolute().parent / "rag_vs_fine_tuning_arxiv.pdf"
+    loader = PyPDFLoader(file_path=pdf_file_path)
+    data = loader.load()
+
+    # Split the PDF document's data into chunks
+    splitter = RecursiveCharacterTextSplitter(
+        separators=["\n\n", "\n", " ", ""],
+        chunk_size=300,
+        chunk_overlap=50,
+    )
+    docs_chunks = splitter.split_documents(documents=data)
+
+    # Embed the chunks/documents in a persistent Chroma vector database
+    # First define the embeddings model - using OpenAIEmbeddings
+    embedding_function = OpenAIEmbeddings(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="text-embedding-3-small",
+    )
+
+    # Embed and ingest the chunks/documents into a Chroma db
+    # This created "chroma.sqlite3" db file in proj root
+    vectorstore = Chroma.from_documents(
+        documents=docs_chunks,
+        embedding=embedding_function,
+        persist_directory=str(Path.cwd()),  # os.getcwd(),
+    )
+
+    # Configure the vector store as a retriever object
+    retriever = vectorstore.as_retriever(
+        search_type="similarity",
+        search_kwargs={"k": 3},
+    )
+
+
+# Delightful data preparation!
+# With your documents split, embedded, and stored, you can now design a prompt
+# to combine the retrieved documents and user input.
+
 if __name__ == "__main__":
     # PDF_document_loaders()
     # CSV_document_loaders()
     # HTML_document_loaders()
     # splitting_by_character()
     # recursive_splitting_by_character()
-    splitting_HTML()
+    # splitting_HTML()
+    preparing_documents_and_vector_db()

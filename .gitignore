@@ -13,6 +13,7 @@ wheels/
 *.pdf
 *.csv
 *.html
+*.sqlite3
 
 
 # =====
