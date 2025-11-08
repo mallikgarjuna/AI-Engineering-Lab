@@ -126,10 +126,16 @@ def react_agents():
 
     # Define the tools
     # Install: uv add wikipedia
-    tools = load_tools(["wikipedia"])
+    tools = load_tools(
+        tool_names=["wikipedia"],
+        llm=llm,
+    )
 
     # Define the agent
-    agent = create_agent(model=llm, tools=tools)
+    agent = create_agent(
+        model=llm,
+        tools=tools,
+    )
 
     # Invoke the agent
     response = agent.invoke(
@@ -140,7 +146,77 @@ def react_agents():
     print(response["messages"][-1].content)
 
 
+# The wikipedia tool is pretty handy for quickly looking up specific facts
+# to enter into your workflows, potentially overcoming an LLM's knowledge gap.
+# Head on over to the final video of the chapter to learn how to create custom tools
+# for your agents!
+
+
+# Custom tools for agents
+def defining_function_for_tool_use():
+    # Install: uv add pandas
+    import pandas as pd
+
+    def retrieve_customer_info(name: str) -> str:
+        """Retrieve customer information based on their name."""
+
+        # Define customer data as a list of dicts
+        customers_data = [
+            {
+                "id": 101,
+                "name": "Alpha Analytics",
+                "subscription_type": "Basic",
+                "active_users": 120,
+                "auto_renewal": True,
+            },
+            {
+                "id": 102,
+                "name": "Blue Horizon Ltd.",
+                "subscription_type": "Standard",
+                "active_users": 350,
+                "auto_renewal": False,
+            },
+            {
+                "id": 103,
+                "name": "Crest Dynamics",
+                "subscription_type": "Enterprise",
+                "active_users": 1200,
+                "auto_renewal": True,
+            },
+            {
+                "id": 104,
+                "name": "Peak Performance Co.",
+                "subscription_type": "Premium",
+                "active_users": 800,
+                "auto_renewal": True,
+            },
+            {
+                "id": 105,
+                "name": "Quantum Systems",
+                "subscription_type": "Standard",
+                "active_users": 640,
+                "auto_renewal": False,
+            },
+        ]
+
+        # Create the df
+        customers_df = pd.DataFrame(data=customers_data)
+
+        # customers_df is not defined in this exercise (but only in course)
+        customer_info = customers_df[customers_df["name"] == name]
+
+        return customer_info.to_string()  # return string data
+
+    # Call the function
+    result = retrieve_customer_info("Peak Performance Co.")
+    print(result)
+
+
+# you've created a function to load and extract employee data.
+# The next step is to create a custom tool for your agent to use.
+
 if __name__ == "__main__":
     # building_prompt_for_sequential_chains()
     # sequential_chains_with_LCEL()
-    react_agents()
+    # react_agents()
+    defining_function_for_tool_use()
