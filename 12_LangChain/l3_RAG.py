@@ -81,10 +81,51 @@ def HTML_document_loaders():
 
     data = loader.load()
 
+    # Print the first document
     print(data[0])
+    # Print the first document's metadata
+    print(data[0].metadata)
 
+
+# Dexterously digested data! Imagine intergrating this data loader into an
+# LLM-powered chatbot; you could scrape HTML from websites and
+# have a conversation with a website!
+# There are lots of other document loaders out there, and
+# I encourage you to explore further in the documentation.
+
+
+# # Splitting external data for retrieval
+def splitting_by_character():
+    # Import the character splitter
+    from langchain_text_splitters import CharacterTextSplitter
+
+    quote = "Words are flowing out like endless rain into a paper cup, \nthey slither while they pass, \nthey slip away across the universe."
+
+    chunk_size = 24
+    chunk_overlap = 10  # chars
+
+    # Create an instance of splitter class
+    splitter = CharacterTextSplitter(
+        separator="\n",
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+    )
+
+    # Split the string (quote) and print the result
+    docs_chunks = splitter.split_text(text=quote)
+
+    print(docs_chunks)
+    print([len(doc) for doc in docs_chunks])  # [57, 29, 35]
+
+
+# Brilliantly broken-down blocks, character by character!
+# CharacterTextSplitter is a fairly simple splitting strategy,
+# and like in this case, can fail to reduce chunks below the specified chunk_size.
+# In the next exercise, you'll take it up a gear and create
+# a recursive character splitter!
 
 if __name__ == "__main__":
     # PDF_document_loaders()
     # CSV_document_loaders()
-    HTML_document_loaders()
+    # HTML_document_loaders()
+    splitting_by_character()
