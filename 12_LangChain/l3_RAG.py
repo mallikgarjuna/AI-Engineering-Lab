@@ -322,6 +322,15 @@ def creating_RAG_chain():
 # and the models used to ensure you get the performance you're looking for.
 
 
+# Wrap-up! ==========================
+# LangChain Hub: https://smith.langchain.com/hub;
+# LangChain Templates: https://templates.langchain.com/;
+
+# LangChain Ecosystem:
+# LangSmith: troubleshooting and evaluating applications
+# LangServe: deploying applications to production
+# LangGraph: multi-agent knowledge graphs
+
 if __name__ == "__main__":
     # PDF_document_loaders()
     # CSV_document_loaders()
