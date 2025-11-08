@@ -84,6 +84,63 @@ def sequential_chains_with_LCEL():
 # handle more sophisticated workflows, it's time to talk about agents,
 # which enable LLMs to make decisions.
 
+
+# AGENTS:
+# In LangChain, agents use language models to determine actions.
+# Agents often use tools, which are functions called by the agent to
+# interact with the system.
+
+# Agents can even use chains and other agents as tools!
+# In this video, we'll discuss a type of agent called ReAct agents.
+# ReAct = Reason(ing) + Act(ing)
+
+# If you ask a ReAct agent:
+# it would start by thinking (Reasoning) about the task and which tool to call,
+# call that tool using the information, and
+# observe the results from the tool call.
+
+# LangGraph:
+# To implement agents, we'll be using LangGraph,
+# which is branch of the LangChain ecosystem
+# specifically for designing agentic systems, or systems including agents.
+# Version used in this course: langgraph==0.2.74
+
+# Agents are a fundamental component of so many LangChain applications,
+# as they can be used to create flexible and sophisticated workflows.
+# Head on over to the next exercise to implement a Zero-Shot ReAct agent!
+
+
+def react_agents():
+    # Install: uv add langchain-community
+    from langchain.agents import create_agent
+    from langchain_community.agent_toolkits.load_tools import load_tools
+    from langchain_openai import ChatOpenAI
+    # from langgraph.prebuilt import create_react_agent # deprecated and moved
+
+    # Define llm
+    llm = ChatOpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-4o-mini",
+        max_completion_tokens=100,
+    )
+
+    # Define the tools
+    # Install: uv add wikipedia
+    tools = load_tools(["wikipedia"])
+
+    # Define the agent
+    agent = create_agent(model=llm, tools=tools)
+
+    # Invoke the agent
+    response = agent.invoke(
+        input={"messages": [("human", "How many people live in New York City?")]}
+    )
+
+    print(response)
+    print(response["messages"][-1].content)
+
+
 if __name__ == "__main__":
     # building_prompt_for_sequential_chains()
-    sequential_chains_with_LCEL()
+    # sequential_chains_with_LCEL()
+    react_agents()
