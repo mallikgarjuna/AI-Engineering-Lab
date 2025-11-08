@@ -248,6 +248,33 @@ def preparing_documents_and_vector_db():
 # With your documents split, embedded, and stored, you can now design a prompt
 # to combine the retrieved documents and user input.
 
+
+def building_retrieval_prompt_template():
+    from langchain_core.prompts import ChatPromptTemplate
+
+    # Add placeholders to the message string
+    message = """
+    Answer the following question using the context provided:
+
+    Context: {context}
+
+    Question: {question}
+
+    Answer:
+    """
+
+    # Create a chat prompt template from the message string
+    # creating a structured template that can be used to generate prompts
+    # for a language model.
+    # The template will automatically replace the {context} and {question}
+    # placeholders with actual values when the prompt is executed.
+    prompt_template = ChatPromptTemplate.from_messages(messages=[("human", message)])
+
+
+# Using prompt templates with placeholders makes it much simpler to integrate
+# external data with LLMs in RAG workflows.
+# Time to bring it all together by exercising with LCEL
+
 if __name__ == "__main__":
     # PDF_document_loaders()
     # CSV_document_loaders()
@@ -255,4 +282,5 @@ if __name__ == "__main__":
     # splitting_by_character()
     # recursive_splitting_by_character()
     # splitting_HTML()
-    preparing_documents_and_vector_db()
+    # preparing_documents_and_vector_db()
+    building_retrieval_prompt_template()
