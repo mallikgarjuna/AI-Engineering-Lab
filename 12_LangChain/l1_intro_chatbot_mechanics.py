@@ -52,6 +52,37 @@ def huggingface_models_in_langchain():
 # any model! Now that you have nailed the defining and invoking LLM workflow,
 # let's look at strategies for prompting these models effectively.
 
+
+# Prompt Templates:
+# Prompt templates are created using LangChain's PromptTemplate class.
+# PromptTemplate.from_template(template=template)
+# ChatPromptTemplate.from_messages(messages=[(),()])
+
+
+def prompt_templates_and_chaining():
+    from langchain_core.prompts import ChatPromptTemplate, PromptTemplate
+    from langchain_openai import ChatOpenAI
+
+    template = (
+        "You are an artificial intelligence assistant, answer the questions. {question}"
+    )
+    prompt_template = PromptTemplate.from_template(template=template)
+
+    llm = ChatOpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-4o-mini",
+        max_completion_tokens=100,
+    )
+
+    llm_chain = prompt_template | llm
+
+    question = "How does LangChain make LLM application development easier?"
+    response = llm_chain.invoke(input={"question": question})
+
+    print(response.content)
+
+
 if __name__ == "__main__":
     # openai_models_in_langchain()
-    huggingface_models_in_langchain()
+    # huggingface_models_in_langchain()
+    prompt_templates_and_chaining()
