@@ -113,7 +113,49 @@ def adding_assistant_messages():
     # going from one-shot to few-shot, to see if this improves!
 
 
+def adding_more_assistant_messages():
+    example1 = "Give me a quick summary of Peru."
+    response1 = "Peru is a country in South America that borders Ecuador, Colombia, Brazil, Bolivia, and Chile. The capital city is Lima."
+    example2 = "Give me a quick summary of Australia."
+    response2 = "Give me a quick summary of Australia."
+    example3 = "Give me a quick summary of Canada."
+    response3 = "Canada is a country in North America that borders the United States. The capital city is Ottawa."
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a helpful Geography tutor that generates concise summaries for different countries.",
+            },
+            {"role": "user", "content": "Give me a quick summary of Portugal."},
+            {
+                "role": "assistant",
+                "content": "Portugal is a country in Europe that borders Spain. The capital city is Lisboa",
+            },
+            {"role": "user", "content": example1},
+            {"role": "assistant", "content": response1},
+            {"role": "user", "content": example2},
+            {"role": "assistant", "content": response2},
+            {"role": "user", "content": example3},
+            {"role": "assistant", "content": response3},
+            {"role": "user", "content": "Give me a quick summary of Greece"},
+        ],
+        max_completion_tokens=100,
+    )
+
+    print(response.choices[0].message.content)
+
+
+# Providing examples helps mitigate undesirable or inaccurate model responses,
+# so they're a good practice in many use cases. Here, however, you can see that
+# adding more examples didn't really improve the response length. In this case,
+# an example in the system message and a few user-assistant pairs would likely
+# provide more optimal responses. Let's learn to create conversations next;
+
+
 if __name__ == "__main__":
     # utilizing_system_messages()
     # adding_guardrails()
-    adding_assistant_messages()
+    # adding_assistant_messages()
+    adding_more_assistant_messages()
