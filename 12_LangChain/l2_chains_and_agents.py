@@ -282,9 +282,102 @@ def creating_custom_tools():
 # Time for the final step: head on over to the next exercise
 # to integrate this tool with an agent!
 
+
+def integrating_custom_tools_with_agents():
+    from langchain.agents import create_agent
+    from langchain_core.tools import tool
+    from langchain_openai import ChatOpenAI
+
+    @tool
+    def retrieve_customer_info(name: str) -> str:
+        """Retrieve customer information based on their name."""
+        import pandas as pd
+
+        # Define customer data as a list of dicts
+        customers_data = [
+            {
+                "id": 101,
+                "name": "Alpha Analytics",
+                "subscription_type": "Basic",
+                "active_users": 120,
+                "auto_renewal": True,
+            },
+            {
+                "id": 102,
+                "name": "Blue Horizon Ltd.",
+                "subscription_type": "Standard",
+                "active_users": 350,
+                "auto_renewal": False,
+            },
+            {
+                "id": 103,
+                "name": "Crest Dynamics",
+                "subscription_type": "Enterprise",
+                "active_users": 1200,
+                "auto_renewal": True,
+            },
+            {
+                "id": 104,
+                "name": "Peak Performance Co.",
+                "subscription_type": "Premium",
+                "active_users": 800,
+                "auto_renewal": True,
+            },
+            {
+                "id": 105,
+                "name": "Quantum Systems",
+                "subscription_type": "Standard",
+                "active_users": 640,
+                "auto_renewal": False,
+            },
+        ]
+
+        # Create the df
+        customers_df = pd.DataFrame(data=customers_data)
+
+        # customers_df is not defined in this exercise (but only in course)
+        customer_info = customers_df[customers_df["name"] == name]
+
+        return customer_info.to_string()  # return string data
+
+    # Define the llm
+    llm = ChatOpenAI(
+        api_key=os.getenv("OPENAI_API_KEY"),
+        model="gpt-4o-mini",
+        max_completion_tokens=100,
+    )
+
+    # Create a ReAct agent
+    agent = create_agent(
+        model=llm,
+        tools=[retrieve_customer_info],
+    )
+
+    # Invoke the agent on the input
+    messages = agent.invoke(
+        input={
+            "messages": [
+                ("human", "Create a summary of our customer: Peak Performance Co."),
+            ],
+        },
+    )
+
+    print(messages["messages"][-1].content)
+
+
+# Imagine the value an application like this could bring to an organization!
+# Natural language interfaces to databases and other data sources are becoming
+# more common, lowering the barrier to entry for making data-informed decisions,
+# all thanks to LLMs and tools like LangChain!
+
+# In the next chapter, you'll continue on this thread to discover
+# how to integrate external data into chatbots through a process called
+# Retrieval Augmented Generation, or RAG.
+
 if __name__ == "__main__":
     # building_prompt_for_sequential_chains()
     # sequential_chains_with_LCEL()
     # react_agents()
     # defining_function_for_tool_use()
-    creating_custom_tools()
+    # creating_custom_tools()
+    integrating_custom_tools_with_agents()
