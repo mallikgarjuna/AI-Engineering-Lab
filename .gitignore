@@ -9,6 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
+# PDF files
+*.pdf
+
 
 # =====
 # Created by https://www.toptal.com/developers/gitignore/api/python
