@@ -40,5 +40,33 @@ def PDF_document_loaders():
 # library of research papers and use RAG to create a tutor chatbot that helps
 # you stay up-to-date on the latest AI research!
 
+
+def CSV_document_loaders():
+    from pathlib import Path
+
+    from langchain_community.document_loaders import CSVLoader
+
+    # This is same as above - same but from specific implementation file
+    # while above is from package-level namespace (exporeted from __init__.py)
+    # from langchain_community.document_loaders.csv_loader import CSVLoader
+
+    # Data from
+    # https://github.com/fivethirtyeight/data/blob/master/fifa/fifa_countries_audience.csv;
+    # https://fivethirtyeight.com/features/how-to-break-fifa/
+
+    # Create document loader
+    csv_file_path = Path(__file__).absolute().parent / "fifa_countries_audience.csv"
+    loader = CSVLoader(file_path=csv_file_path)
+
+    data = loader.load()
+
+    print(data[0])
+
+
+# CSVLoader creates a document for each row in the CSV file,
+# which could be used in an LLM application to summarize data and generate reports.
+# On to the final document loader type!
+
 if __name__ == "__main__":
-    PDF_document_loaders()
+    # PDF_document_loaders()
+    CSV_document_loaders()
