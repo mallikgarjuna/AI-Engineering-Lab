@@ -103,9 +103,26 @@ def adjusting_summary_length():
     print(short_summary_text[0]["summary_text"])
 
 
+# Auto Models and Tokenizers =============
+def tokenizing_text_with_AutoTokenizer():
+    from transformers import AutoTokenizer
+
+    # Load the tokenizer
+    tokenizer = AutoTokenizer.from_pretrained(
+        "distilbert-base-uncased-finetuned-sst-2-english"
+    )
+
+    # Split input text into tokens
+    tokens = tokenizer.tokenize("AI: Making robots smarter and human lazier!")
+
+    # Display the tokenized output
+    print(f"Tokenzied output: {tokens}")
+
+
 if __name__ == "__main__":
     # grammatical_correctness()
     # qnli_pipeline()
     # dynamic_category_assignment()
     # summarizing_long_text()
-    adjusting_summary_length()  # didn't run this
+    # adjusting_summary_length()  # didn't run this
+    tokenizing_text_with_AutoTokenizer()  # didn't run this
