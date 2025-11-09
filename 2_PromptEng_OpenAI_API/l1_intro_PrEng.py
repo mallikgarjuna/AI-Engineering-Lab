@@ -111,9 +111,28 @@ def building_specific_and_precise_prompts():
     print("\n Generated story: \n", response)
 
 
+# crafting efficient prompts using prompt engineering principles.
+# This ability is crucial in accurately controlling and guiding the language
+# model's responses to adapt to the requirements set by you
+
+
+# Structured outputs and conditional prompts ====================
+def generate_table():
+    # Create a prompt that generates the table
+    prompt = (
+        "Generate a table of 10 books that I should read as a science "
+        "fiction lover. The table should have columns for Title, Author, and Year."
+    )
+
+    # Get the response
+    response = get_response(prompt)
+    print(response)
+
+
 if __name__ == "__main__":
     # openai_api_message_roles()
     # print(get_response("What is the capital of France?"))
     # exploring_prompt_engineering()
     # using_delimited_prompts_with_fstrings()
-    building_specific_and_precise_prompts()
+    # building_specific_and_precise_prompts()
+    generate_table()
