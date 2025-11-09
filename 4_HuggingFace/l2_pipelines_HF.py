@@ -63,9 +63,27 @@ def dynamic_category_assignment():
 # You were able to use the model to predict brand new classes! This was just the beginning. There is so much more to explore in text classification pipelines with Hugging Face.
 
 
-# Text summarization
+# Text summarization ==================
+def summarizing_long_text():
+    """Abstractive summarization."""
+    from transformers import pipeline
+
+    original_text = """Greece has many islands, with estimates ranging from somewhere around 1,200 to 6,000, depending on the minimum size to take into account. The number of inhabited islands is variously cited as between 166 and 227.
+    The Greek islands are traditionally grouped into the following clusters: the Argo-Saronic Islands in the Saronic Gulf near Athens; the Cyclades, a large but dense collection occupying the central part of the Aegean Sea; the North Aegean islands, a loose grouping off the west coast of Turkey; the Dodecanese, another loose collection in the southeast between Crete and Turkey; the Sporades, a small tight group off the coast of Euboea; and the Ionian Islands, chiefly located to the west of the mainland in the Ionian Sea. Crete with its surrounding islets and Euboea are traditionally excluded from this grouping.
+    """
+
+    summarizer = pipeline(task="summarization", model="cnicu/t5-small-booksum")
+
+    summary_text = summarizer(original_text)
+
+    print(f"Original text length: {len(original_text)}")
+    print(f"Original text length: {len(summary_text[0]['summary_text'])}")
+    # Original text length: 836
+    # Original text length: 473
+
 
 if __name__ == "__main__":
     # grammatical_correctness()
     # qnli_pipeline()
-    dynamic_category_assignment()
+    # dynamic_category_assignment()
+    summarizing_long_text()
