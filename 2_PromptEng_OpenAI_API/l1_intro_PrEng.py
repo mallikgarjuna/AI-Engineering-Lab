@@ -129,10 +129,68 @@ def generate_table():
     print(response)
 
 
+def customizing_output_format():
+    text = "The sun was setting behind the mountains, casting a warm golden glow across the landscape. Birds were chirping happily, and a gentle breeze rustled the leaves of the trees. It was a perfect evening for a leisurely stroll in the park  "
+    # Create the instructions
+    instructions = (
+        "Determine the language and generate a suitable title for the text "
+        "excerpt provided in the triple backticks delimeter."
+    )
+
+    # Create the output format
+    output_format = f"""Use the following output format for your response.
+    Text: <text provided>
+    Language: <language of the text>
+    Title: <title for the text>
+    """
+
+    # Create the final prompt
+    prompt = instructions + output_format + f"```{text}```"
+    response = get_response(prompt)
+    print(response)
+
+
+# By effectively designing prompts to customize the output structure based on the
+# given input, you've showcased your proficiency in tailoring AI responses to
+# specific requirements.
+
+
+def using_conditional_prompts():
+    text = (
+        "The sun was setting behind the mountains, "
+        "casting a warm golden glow across the landscape.  "
+    )
+    # Create the instructions
+    instructions = (
+        "Infer the language, the number of sentences of the given text "
+        "provided in the triple backticks delimeter. If the text contains more than "
+        "one sentence, generate a suitable title for it, otherwiser, write 'N/A' "
+        "for the title."
+    )
+
+    # Create the output format
+    output_format = f"""Use the following output format for your response.
+    Text: <text provided>
+    Language: <language of the text provided>
+    Number-of-sentences: <number of sentences in the provided text>
+    Title: <title for the text>
+    """
+
+    prompt = instructions + output_format + f"```{text}```"
+    response = get_response(prompt)
+    print(response)
+
+
+# The model clearly follows your requirements! And since the text you used had
+# only one sentence, the model did not generate a title for it
+# - thanks to your well-crafted instructions!
+
 if __name__ == "__main__":
     # openai_api_message_roles()
     # print(get_response("What is the capital of France?"))
     # exploring_prompt_engineering()
     # using_delimited_prompts_with_fstrings()
     # building_specific_and_precise_prompts()
-    generate_table()
+    # generate_table()
+    # customizing_output_format()
+    using_conditional_prompts()
