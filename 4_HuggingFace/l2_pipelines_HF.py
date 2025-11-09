@@ -42,6 +42,30 @@ def qnli_pipeline():
 # the QNLI pipeline showed that the text could not answer the question with a low score. Let's move on to dynamic category assignment.
 
 
+def dynamic_category_assignment():
+    from transformers import pipeline
+
+    text = "AI-powered robots assist in complex brain surgeries with precision."
+
+    classifier = pipeline(
+        task="zero-shot-classification",
+        model="facebook/bart-large-mnli",  # >1.5GB
+    )
+
+    categories = ["politics", "science", "sports"]
+
+    output = classifier(text, categories)
+
+    print(f"Top Label: {output['labels'][0]} with score: {output['scores'][0]}")
+    # Top Label: science with score: 0.9510334134101868
+
+
+# You were able to use the model to predict brand new classes! This was just the beginning. There is so much more to explore in text classification pipelines with Hugging Face.
+
+
+# Text summarization
+
 if __name__ == "__main__":
     # grammatical_correctness()
-    qnli_pipeline()
+    # qnli_pipeline()
+    dynamic_category_assignment()
