@@ -82,8 +82,30 @@ def summarizing_long_text():
     # Original text length: 473
 
 
+# The summary is shorter and demonstrates how abstractive summarization generates new, concise sentences. Unlike extractive methods, it rephrases content. Next, let's explore the minimum and maximum length parameters of the summarization pipeline!
+
+
+def adjusting_summary_length():
+    from transformers import pipeline
+
+    original_text = "Greece has many islands, with estimates ranging from somewhere around 1,200 to 6,000, depending on the minimum size to take into account. The number of inhabited islands is variously cited as between 166 and 227. The Greek islands are traditionally grouped into the following clusters: the Argo-Saronic Islands in the Saronic Gulf near Athens; the Cyclades, a large but dense collection occupying the central part of the Aegean Sea; the North Aegean islands, a loose grouping off the west coast of Turkey; the Dodecanese, another loose collection in the southeast between Crete and Turkey; the Sporades, a small tight group off the coast of Euboea; and the Ionian Islands, chiefly located to the west of the mainland in the Ionian Sea. Crete with its surrounding islets and Euboea are traditionally excluded from this grouping."
+
+    # Generate a summary of original_text between 1 and 10 tokens
+    short_summarizer = pipeline(
+        task="summarization",
+        model="cnicu/t5-small-booksum",
+        min_new_tokens=1,
+        max_new_tokens=10,
+    )
+
+    short_summary_text = short_summarizer(original_text)
+
+    print(short_summary_text[0]["summary_text"])
+
+
 if __name__ == "__main__":
     # grammatical_correctness()
     # qnli_pipeline()
     # dynamic_category_assignment()
-    summarizing_long_text()
+    # summarizing_long_text()
+    adjusting_summary_length()  # didn't run this
