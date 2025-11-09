@@ -141,11 +141,51 @@ def using_AutoClasses():
     print(f"Sentiment using AutoClasses: {output[0]['label']}")
 
 
+# Document Q&A ============
+# We’ve explored core tasks like Text Classification, Summarization and Question Answering, all powered by Hugging Face pipelines. Each task has its unique application, whether it’s categorizing emotions, summarizing lengthy documents, or finding precise answers to questions.
+def extracting_text_with_PyPDF():
+    from pypdf import PdfReader
+
+    # Extract text from the PDF
+    reader = PdfReader("US_Employee_Policy.pdf")
+
+    # Extract text from all pages
+    document_text = ""
+    for page in reader.pages:
+        document_text += page.extract_text()
+
+    print(document_text)
+    return document_text
+
+
+# You’ve completed PDF text extraction. 📖 Get ready to bring it all together with a Q&A pipeline next! 🚀
+
+
+def building_QandA_pipeline():
+    from transformers import pipeline
+
+    document_text = extracting_text_with_PyPDF()
+    # Load the question-answering pipeline
+    qa_pipeline = pipeline(
+        task="question-answering", model="distilbert-base-cased-distilled-squad"
+    )
+
+    question = "What is the notice period for resignation?"
+
+    # Get the answer from the QA pipeline
+    result = qa_pipeline(question=question, context=document_text)
+
+    # Print the answer
+    print(f"Answer: {result['answer']}")
+
+
 if __name__ == "__main__":
     # grammatical_correctness()
     # qnli_pipeline()
     # dynamic_category_assignment()
     # summarizing_long_text()
     # adjusting_summary_length()  # didn't run this
-    tokenizing_text_with_AutoTokenizer()  # didn't run this
-    using_AutoClasses()
+    # tokenizing_text_with_AutoTokenizer()  # didn't run this
+    # using_AutoClasses()
+    # extracting_text_with_PyPDF()
+    building_QandA_pipeline()
