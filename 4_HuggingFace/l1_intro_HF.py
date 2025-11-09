@@ -56,15 +56,34 @@ def loading_datasets():
     # Install: uv add datasets
     from datasets import load_dataset
 
+    # # Load the "validation" split of the TIGER-Lab/MMLU-Pro dataset
     my_dataset = load_dataset(
         "TIGER-Lab/MMLU-Pro",
         split="validation",
     )
 
+    # Display dataset details
     print(my_dataset)
+
+
+# There are 77 rows in the 'validation' partition of the dataset!
+
+
+def manipulating_datasets():
+    """Don't run this - it's loading large memory .parquet files."""
+    from datasets import load_dataset
+
+    wikipedia = load_dataset("wikimedia/wikipedia", "20231101.en")
+
+    filtered = wikipedia.filter(lambda row: "football" in row["text"])
+
+    selected_example = filtered.select(range(1))
+
+    print(selected_example[0]["text"])
 
 
 if __name__ == "__main__":
     # building_text_generation_pipeline()
     # inference_providers()
-    loading_datasets()
+    # loading_datasets()
+    manipulating_datasets()  # Don't run this
