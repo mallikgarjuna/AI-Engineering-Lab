@@ -65,7 +65,31 @@ def exploring_prompt_engineering():
     print(response)
 
 
+# You've now had a sneak peek at prompt engineering and how it effectively
+# shapes the model's responses. Get ready for more!
+
+# Key principles of prompt engineering ============
+# Clear and concise prompts enhance the model's output and ensure successful task completion.
+
+
+def using_delimited_prompts_with_fstrings():
+    story = """You are a junior developer at a dynamic startup that generates content 
+    with the help of AI. The company believes this technology can revolutionize 
+    storytelling, and you are excited to be a part of it"""
+    # story = "In a distant galaxy, there was a brave space explorer named Alex. Alex had spent years traveling through the cosmos, discovering new planets and meeting alien species. One fateful day, while exploring an uncharted asteroid belt, Alex stumbled upon a peculiar object that would change the course of their interstellar journey forever..."
+
+    prompt = f"""Generate a continuation of a story delimited by triple backticks.
+    ```{story}```
+    """
+
+    response = get_response(prompt)
+
+    print(f"\n Original story: \n: {story}")
+    print(f"\n Generated story: \n: {response}")
+
+
 if __name__ == "__main__":
     # openai_api_message_roles()
     # print(get_response("What is the capital of France?"))
-    exploring_prompt_engineering()
+    # exploring_prompt_engineering()
+    using_delimited_prompts_with_fstrings()
