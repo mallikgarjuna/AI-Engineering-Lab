@@ -73,10 +73,11 @@ def exploring_prompt_engineering():
 
 
 def using_delimited_prompts_with_fstrings():
-    story = """You are a junior developer at a dynamic startup that generates content 
-    with the help of AI. The company believes this technology can revolutionize 
-    storytelling, and you are excited to be a part of it"""
-    # story = "In a distant galaxy, there was a brave space explorer named Alex. Alex had spent years traveling through the cosmos, discovering new planets and meeting alien species. One fateful day, while exploring an uncharted asteroid belt, Alex stumbled upon a peculiar object that would change the course of their interstellar journey forever..."
+    # story = """You are a junior developer at a dynamic startup that generates content
+    # with the help of AI. The company believes this technology can revolutionize
+    # storytelling, and you are excited to be a part of it"""
+
+    story = "In a distant galaxy, there was a brave space explorer named Alex. Alex had spent years traveling through the cosmos, discovering new planets and meeting alien species. One fateful day, while exploring an uncharted asteroid belt, Alex stumbled upon a peculiar object that would change the course of their interstellar journey forever..."
 
     prompt = f"""Generate a continuation of a story delimited by triple backticks.
     ```{story}```
@@ -88,8 +89,31 @@ def using_delimited_prompts_with_fstrings():
     print(f"\n Generated story: \n: {response}")
 
 
+# Although the generated story smoothly follows the original,
+# the prompt was open-ended, and maybe your startup has some requirements to follow.
+# You will deal with this in the following exercise!
+
+
+def building_specific_and_precise_prompts():
+    story = "In a distant galaxy, there was a brave space explorer named Alex. Alex had spent years traveling through the cosmos, discovering new planets and meeting alien species. One fateful day, while exploring an uncharted asteroid belt, Alex stumbled upon a peculiar object that would change the course of their interstellar journey forever..."
+
+    # Create a request to complete the story
+    prompt = f"""Complete the story given in the triple backticks 
+    with only two paragraphs 
+    in the style of Shakespeare.
+    ```{story}```
+    """
+
+    # Get the generated response
+    response = get_response(prompt)
+
+    print("\n Original story: \n", story)
+    print("\n Generated story: \n", response)
+
+
 if __name__ == "__main__":
     # openai_api_message_roles()
     # print(get_response("What is the capital of France?"))
     # exploring_prompt_engineering()
-    using_delimited_prompts_with_fstrings()
+    # using_delimited_prompts_with_fstrings()
+    building_specific_and_precise_prompts()
